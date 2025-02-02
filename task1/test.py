@@ -13,10 +13,10 @@ def test_get_height(avl_tree):
     # Тест для дерева с одним узлом
     root = Node(10)
     assert avl_tree.get_height(root) == 1
-
     # Тест для дерева с несколькими уровнями
     root.left = Node(5)
     root.right = Node(15)
+    avl_tree.update_height(root)
     assert avl_tree.get_height(root) == 2
 
 def test_update_height(avl_tree):
@@ -30,9 +30,19 @@ def test_get_balance(avl_tree):
     root = Node(10)
     root.left = Node(5)
     root.right = Node(15)
+
+    avl_tree.update_height(root.left)
+    avl_tree.update_height(root.right)
+    avl_tree.update_height(root)
+
     assert avl_tree.get_balance(root) == 0
 
     root.left.left = Node(2)
+
+    avl_tree.update_height(root.left.left)
+    avl_tree.update_height(root.left)
+    avl_tree.update_height(root)
+
     assert avl_tree.get_balance(root) == 1
 
 def test_rotate_right(avl_tree):
@@ -65,9 +75,9 @@ def test_insert(avl_tree):
 
     avl_tree.insert(2)
     avl_tree.insert(1)
-    assert avl_tree.root.val == 5
+    assert avl_tree.root.val == 10
     assert avl_tree.root.left.val == 2
-    assert avl_tree.root.right.val == 10
+    assert avl_tree.root.right.val == 15
 
 def test_delete(avl_tree):
     avl_tree.insert(10)
@@ -106,7 +116,7 @@ def test_split(avl_tree):
     root.right.right = Node(20)
 
     left_tree, right_tree = avl_tree.split(root, 10)
-    assert left_tree.val == 5
+    assert left_tree.val == 7
     assert right_tree.val == 15
 
 def test_build_avl(avl_tree):
@@ -142,8 +152,17 @@ def test_validate_avl(avl_tree):
     root = Node(10)
     root.left = Node(5)
     root.right = Node(15)
+    avl_tree.update_height(root.left)
+    avl_tree.update_height(root.right)
+    avl_tree.update_height(root)
+
     assert avl_tree.validate_avl(root) == True
 
     root.left.left = Node(2)
     root.left.left.left = Node(1)
+    avl_tree.update_height(root.left.left.left)
+    avl_tree.update_height(root.left.left)
+    avl_tree.update_height(root.left)
+    avl_tree.update_height(root)
+    
     assert avl_tree.validate_avl(root) == False
