@@ -33,7 +33,13 @@ class AVLTree:
         Возвращает узел с минимальным значением в поддереве.
         """
         return node if not node.left else self.get_min_node(node.left)
-    
+
+    def get_max_node(self, node: Node) -> Node:
+        """
+        Возвращает узел с максимальным значением в поддереве.
+        """
+        return node if not node.right else self.get_max_node(node.right)
+
     def rotate_right(self, root: Node) -> Node:
         """
         Правый поворот вокруг узла root.
@@ -151,8 +157,9 @@ class AVLTree:
             node.right = self._insert(node.right, val)
         else:
             return node  # Дубликаты не вставляем
+        self.update_height(node)
+        return self.balance(node)# Балансируем поддерево
 
-        return self.balance(node)  # Балансируем поддерево
 
     def delete(self, val: int) -> None:
         """
@@ -196,7 +203,7 @@ class AVLTree:
 
         if self.get_height(left_tree) > self.get_height(right_tree):
             max_left = self.get_max_node(left_tree)
-            left_tree = self.delete(left_tree, max_left.val)
+            left_tree = self._delete(left_tree, max_left.val)
 
             max_left.left = left_tree
             max_left.right = right_tree
@@ -205,7 +212,7 @@ class AVLTree:
             return self.balance(max_left)
         else:
             min_right = self.get_min_node(right_tree)
-            right_tree = self.delete(right_tree, min_right.val)
+            right_tree = self._delete(right_tree, min_right.val)
 
             min_right.left = left_tree
             min_right.right = right_tree
@@ -293,7 +300,7 @@ class AVLTree:
 
         while queue:
             node = queue.popleft()
-            result.append(node.key)
+            result.append(node.val)
 
             if node.left:
                 queue.append(node.left)
