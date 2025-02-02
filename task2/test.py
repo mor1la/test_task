@@ -57,7 +57,7 @@ def test_large_table():
     assert ht.get("key1000") is None
 
 def test_string_representation():
-    ht = HashTable()
+    ht = HashTable(size=1)
     ht.insert("apple", 5)
     ht.insert("banana", 10)
     
