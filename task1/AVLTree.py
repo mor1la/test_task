@@ -3,6 +3,10 @@ from collections import deque
 
 class AVLTree:
 
+    # =======================
+    # Базовые операции
+    # =======================
+
     def __init__(self):
         """
         Инициализация AVL-дерева.
@@ -40,6 +44,10 @@ class AVLTree:
         """
         return node if not node.right else self.get_max_node(node.right)
 
+    # =======================
+    # Повороты
+    # =======================
+
     def rotate_right(self, root: Node) -> Node:
         """
         Правый поворот вокруг узла root.
@@ -75,10 +83,10 @@ class AVLTree:
         self.update_height(new_root)
 
         return new_root
-    
+
     def left_right_rotate(self, node: Node) -> Node:
         """
-        Выполняет левый поворот вокруг левого поддерева узла, 
+        Выполняет левый поворот вокруг левого поддерева узла,
         а затем правый поворот вокруг самого узла.
         Возвращает новую вершину, которая стала вместо исходного узла.
         """
@@ -93,7 +101,7 @@ class AVLTree:
         """
         node.right = self.rotate_right(node.right)
         return self.rotate_left(node)
-    
+
     def balance(self, node: Node) -> Node:
         """
         Балансировка узла node.
@@ -113,6 +121,10 @@ class AVLTree:
 
         return node  # Если баланс в норме, возвращаем без изменений
 
+    # =======================
+    # Операции поиска, вставки, удаления
+    # =======================
+
     def search(self, val: int) -> Node:
         """
         Ищет узел с заданным значением в дереве.
@@ -126,14 +138,14 @@ class AVLTree:
         Возвращает True, если узел найден, иначе продолжает поиск в левом или правом поддереве.
         """
         if not node:
-            return False  
+            return False
         if node.val == val:
-            return True 
+            return True
         elif val < node.val:
             return self._search(node.left, val)
         else:
             return self._search(node.right, val)
-        
+
     def insert(self, val: int) -> None:
         """
         Вставка нового значения в AVL-дерево.
@@ -190,7 +202,11 @@ class AVLTree:
                 node.right = self._delete(node.right, min_larger_node.val)
 
         return self.balance(node)
-    
+
+    # =======================
+    # Дополнительные операции
+    # =======================
+
     def merge(self, left_tree: Node, right_tree: Node) -> Node:
         """
         Сливает два поддерева в одно сбалансированное дерево.
@@ -219,7 +235,7 @@ class AVLTree:
 
             self.update_height(min_right)
             return self.balance(min_right)
-        
+
     def split(self, root: Node, val: int):
         """
         Разделяет дерево на два поддерева: одно с элементами <= val, другое — с элементами > val.
@@ -249,7 +265,7 @@ class AVLTree:
         sorted_list = sorted(arr)
         if not sorted_list:
             return None
-        
+
         mid = len(sorted_list) // 2
         node = Node(sorted_list[mid])
         node.left = self.build_avl(sorted_list[:mid])
@@ -257,7 +273,11 @@ class AVLTree:
         self.update_height(node)
 
         return node
-    
+
+    # =======================
+    # Статические операции
+    # =======================
+
     def count_nodes(self) -> int:
         """
         Возвращает количество узлов в дереве.
@@ -270,6 +290,9 @@ class AVLTree:
         """
         return 0 if not node else 1 + self._count_nodes(node.left) + self._count_nodes(node.right)
 
+    # =======================
+    # Обходы дерева (в глубину и в ширину)
+    # =======================
 
     def inorder_traversal(self) -> list:
         """
@@ -287,7 +310,7 @@ class AVLTree:
             self._inorder_traversal(node.left, result)
             result.append(node.val)
             self._inorder_traversal(node.right, result)
-    
+
     def bfs(self) -> list:
         """
         Выполняет обход дерева в ширину и возвращает список значений узлов.
@@ -308,9 +331,13 @@ class AVLTree:
                 queue.append(node.right)
 
         return result
-
+    
+    # =======================
+    # Валидация дерева
+    # =======================
+    
     def validate_avl(self, node: Node) -> bool:
-        """  
+        """
         Проверяет, является ли дерево сбалансированным AVL-деревом.
         """
         return self._validate_avl(node)
