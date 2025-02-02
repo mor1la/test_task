@@ -2,7 +2,7 @@ class HashTable:
     def __init__(self, size=10):
         """
         Инициализация хэш-таблицы.
-        size: размер таблицы (количество ведер).
+        size: размер таблицы (количество ячеек).
         """
         self.size = size
         self.table = [[] for _ in range(size)]
